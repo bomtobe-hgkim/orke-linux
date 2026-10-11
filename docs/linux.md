@@ -1,5 +1,7 @@
 # Install orke on a Linux server
 
+> This guide describes the public October 9, 2026 Linux 3.4.1 package and preserves its measured installation flow. The [main README](../README.md) is the complete operator guide, including the `orke update`, `orke uninstall` and readiness commands merged on October 11, their availability requirements and older-version alternatives.
+
 The Linux package runs orke on a server that has no screen, such as a cloud VM. You install it over SSH with one command:
 
 ```bash
