@@ -16,10 +16,10 @@
   <a href="https://orke.bomtobe.com/support/">Support</a>
 </p>
 
-This README takes you from a fresh Ubuntu server to a running workspace, then covers everyday commands, updates, removal and troubleshooting. orke's interface and command-line messages are in **Korean**; their English meanings appear alongside the labels below.
+This README takes you from a fresh Ubuntu server to a running workspace, then covers everyday commands, updates, removal and troubleshooting. Linux 3.4.4 supports interface language selection and uses English for default server and CLI output. Korean interface labels below include their English meanings.
 
 > [!IMPORTANT]
-> **Check which Linux build you have.** The current public download is **3.4.1, originally released on October 9, 2026**. This README also documents the management changes merged into master on October 11: `orke update`, `orke uninstall`, `--purge` and service readiness checks. Sections marked **New Linux builds** require a package containing those changes; they are not in the currently linked 3.4.1 archive. Existing 3.4.1 users can follow the installation steps and the clearly marked older-version alternatives below. A documentation update does not update an installed program.
+> **Check which Linux build you have.** The current public download is **3.4.4, released on October 12, 2026**. It includes `orke update`, `orke uninstall`, `--purge`, service readiness checks, session/package control commands and the server browser. Existing 3.4.1 users should rerun the one-line installer below to upgrade; that older package has no `orke update` command. Updating a running service ends its active terminal and agent sessions, so run the upgrade from SSH when those sessions can be stopped.
 
 ## Contents
 
@@ -54,13 +54,13 @@ This README takes you from a fresh Ubuntu server to a running workspace, then co
 
 The package includes its .NET runtime. **You do not need to build orke or install the .NET SDK.** Node.js/npm below are for one Codex installation method, not for running orke itself.
 
-| Capability | Public Linux 3.4.1 | New Linux builds from current master |
+| Capability | Older Linux 3.4.1 | Current Linux 3.4.4 |
 | --- | --- | --- |
 | Terminal sessions, agents, Git, browser access to the workspace, orke support | Available | Available |
 | `serve`, `remote setup`, service install/status/restart/removal | Available | Available |
-| `orke update`, `orke uninstall`, `orke uninstall --purge` | Use the older-version alternatives in this README | Available with the October 11 changes |
-| `service wait-ready` and retaining an older payload if an update starts but is not ready | Not included | Available with the new installer/service commands |
-| Session/package control CLI and server-hosted web windows | Not included in this archive | Included in current source; web windows also depend on the host's Chromium sandbox configuration |
+| `orke update`, `orke uninstall`, `orke uninstall --purge` | Use the older-version alternatives in this README | Available |
+| `service wait-ready` and retaining an older payload if an update starts but is not ready | Not included | Available |
+| Session/package control CLI and server-hosted web windows | Not included in this archive | Available; web windows also depend on the host's Chromium sandbox configuration |
 
 All commands in the numbered installation steps run **in your SSH session on the server**, unless a step explicitly says to use your own computer's browser.
 
@@ -72,10 +72,13 @@ Run as your ordinary SSH user:
 
 ```bash
 sudo apt-get update
-sudo apt-get install -y libicu74 ca-certificates procps curl git tar gzip coreutils
+sudo apt-get install -y libicu74 ca-certificates procps curl git tar gzip coreutils \
+  xvfb libnss3 libgtk-3-0t64 libatk1.0-0t64 libatk-bridge2.0-0t64 \
+  libcups2t64 libdrm2 libxkbcommon0 libxcomposite1 libxdamage1 libxfixes3 \
+  libxrandr2 libgbm1 libasound2t64
 ```
 
-These cover the current public 3.4.1 server package. New packages with server web windows also check the [additional browser dependencies](#session-commands-and-server-web-windows). If an installer reports missing packages, run the exact `apt-get` command it prints and retry.
+These cover Linux 3.4.4, including its [browser dependencies](#session-commands-and-server-web-windows), even when you plan to use terminals only. If an installer reports missing packages, run the exact `apt-get` command it prints and retry.
 
 ### Run the installer
 
@@ -189,7 +192,7 @@ loginctl show-user "$(id -un)" -p Linger
 
 Expected values are `active` and `Linger=yes`. `orke service status` provides diagnostics even if a service is stopped or missing; its exit code alone is not a readiness check.
 
-**New Linux builds:** `service install` and `service restart` also wait for the daemon to answer. The server web browser and ngrok have their own status, so a ready daemon does not guarantee either connection is ready. See [readiness and recovery](#service-readiness-and-recovery).
+**Linux 3.4.4:** `service install` and `service restart` also wait for the daemon to answer. The server web browser and ngrok have their own status, so a ready daemon does not guarantee either connection is ready. See [readiness and recovery](#service-readiness-and-recovery).
 
 ### Optional foreground test
 
@@ -311,7 +314,7 @@ Run service maintenance, updates and removal in **SSH**, outside orke's own term
 | Latest service events | `journalctl --user -u orke.service -n 50 --no-pager` | Startup/failure and systemd events |
 | Follow detailed logs | `tail -f ~/.orke/logs/daemon.log` | Live daemon/connection details; Ctrl+C stops only the log viewer |
 
-**New Linux builds** add the following commands:
+**Linux 3.4.4** includes the following commands:
 
 | Task | Command |
 | --- | --- |
@@ -334,7 +337,7 @@ An administrator can add orke's range, **47620–48643 plus 48700**, to that lis
 
 ## Update or choose a version
 
-### New Linux builds: update in one command
+### Linux 3.4.4: update in one command
 
 From SSH, when the running sessions can be stopped:
 
@@ -349,9 +352,9 @@ It selects the latest published Linux version, checks the downloaded package and
 - `--version X.Y.Z` explicitly selects a published version, including an older one. An exact version match is still a no-op.
 - When a running service is replaced, its terminals/agents end and browser access briefly disconnects. New installers wait for daemon readiness before removing the previous payload.
 
-The currently published `3.4.1` is the October 9 package. Selecting it from a **different installed version** installs its older command surface. A development build also labeled `3.4.1` does nothing even with `--version 3.4.1`, because the version matches. The one-line reinstall below can replace the actual package bytes; it does not add October 11 commands unless the downloaded package contains them.
+The older `3.4.1` is the October 9 package. Selecting it from a **different installed version** restores its older command surface, including the absence of `orke update` and `orke uninstall`. The current `3.4.4` includes those commands. The one-line reinstall below can replace package bytes even when the version number matches.
 
-### Existing public 3.4.1: rerun the installer
+### Older 3.4.1: rerun the installer
 
 Use this route until you install a release containing `orke update`:
 
@@ -359,10 +362,10 @@ Use this route until you install a release containing `orke update`:
 curl -fsSL https://orke.bomtobe.com/install.sh | bash
 ```
 
-For a specific published version, for example 3.4.1:
+For the current version explicitly:
 
 ```bash
-curl -fsSL https://orke.bomtobe.com/install.sh | bash -s -- --version 3.4.1
+curl -fsSL https://orke.bomtobe.com/install.sh | bash -s -- --version 3.4.4
 ```
 
 Rerunning the one-line installer can reinstall the same version and restart its running service. If a foreground `orke serve` is running, stop it with Ctrl+C in its own SSH terminal first.
@@ -371,7 +374,7 @@ Rerunning the one-line installer can reinstall the same version and restart its 
 
 Choose whether you want to keep settings and records. **The new uninstall command does not ask for confirmation.** Run it as the installing user from SSH.
 
-### New Linux builds: remove the program and keep data
+### Linux 3.4.4: remove the program and keep data
 
 ```bash
 orke uninstall
@@ -379,7 +382,7 @@ orke uninstall
 
 This stops/removes the user service, deletes the installed program and its command link, and cleans up installer-owned leftover folders. It preserves the settings and records under the actual `ORKE_HOME`, normally `~/.orke`, so a later installation can reuse them.
 
-### New Linux builds: also erase orke's data
+### Linux 3.4.4: also erase orke's data
 
 If you used **orke support**, first delete its rooms/AIs in orke while it is running and let their associated history cleanup finish. Purge refuses while support rooms, test rooms or rooms still being deleted remain.
 
@@ -396,7 +399,7 @@ Agent help skills installed by orke outside its data home can also remain. Remov
 If removal reports that an installation is in progress or a standalone process is still running, finish that operation or stop that exact foreground process, then retry. Do not manually delete a folder being used by a running update.
 
 <details>
-<summary>Existing public 3.4.1: remove the service and files in order</summary>
+<summary>Older 3.4.1: remove the service and files in order</summary>
 
 The old package has no top-level `uninstall` command. Prepare **before removing the service or program**:
 
@@ -423,7 +426,7 @@ These paths assume the default data location. If you used `ORKE_HOME`, use the a
 
 ## Service readiness and recovery
 
-**New Linux builds.** `service install` and `service restart` verify that the intended installed daemon answers; `wait-ready` performs the same check without installing or restarting it:
+**Linux 3.4.4.** `service install` and `service restart` verify that the intended installed daemon answers; `wait-ready` performs the same check without installing or restarting it:
 
 ```bash
 orke service wait-ready --timeout 120
@@ -450,11 +453,11 @@ If an update replaces files and starts the new service but readiness fails, the 
 | Installer exit 1 | Installation was refused, failed or restored before completion |
 | Installer exit 3 | New files were placed, but the service did not become ready; the previous payload was retained |
 
-The currently public older package does not provide these new readiness/retention guarantees. The website bootstrap's exit-code handling also needs the matching deployed update to preserve exit 3; read the printed diagnostics rather than relying on an older wrapper's exit code alone.
+The older 3.4.1 package does not provide these readiness/retention guarantees. The current package and website bootstrap preserve exit 3; read the printed recovery instructions if the service is not ready.
 
 ## Session commands and server web windows
 
-**New Linux builds.** Current source includes a control CLI and a server-owned virtual display for web windows. These capabilities are absent from the public October 9 archive.
+**Linux 3.4.4.** The package includes a control CLI and a server-owned virtual display for web windows. These capabilities are absent from the older October 9 archive.
 
 Useful read-only commands after the daemon starts:
 
@@ -501,7 +504,7 @@ Inspect the session before sending input. `--submit true` requests Enter; succes
 
 ### Browser dependencies and status
 
-New server-browser packages require these additional Ubuntu packages:
+Linux 3.4.4 requires these additional Ubuntu packages:
 
 ```bash
 sudo apt-get install -y xvfb libnss3 libgtk-3-0t64 libatk1.0-0t64 \
@@ -671,26 +674,29 @@ When asking for help, include the version from **설정 → 정보** — **Setti
 
 | Version | Package | Checksum | Original release |
 | --- | --- | --- | --- |
-| **3.4.1** | [Linux x64 tar.gz](https://github.com/bomtobe-hgkim/orke-linux/releases/download/v3.4.1/orke-3.4.1-linux-x64.tar.gz) | [SHA-256](https://github.com/bomtobe-hgkim/orke-linux/releases/download/v3.4.1/orke-3.4.1-linux-x64.tar.gz.sha256) | October 9, 2026; ChatGPT tab-state fix |
+| **3.4.4** | [Linux x64 tar.gz](https://github.com/bomtobe-hgkim/orke-linux/releases/download/v3.4.4/orke-3.4.4-linux-x64.tar.gz) | [SHA-256](https://github.com/bomtobe-hgkim/orke-linux/releases/download/v3.4.4/orke-3.4.4-linux-x64.tar.gz.sha256) | October 12, 2026; latest master, update/removal commands and server browser |
+| 3.4.1 | [Linux x64 tar.gz](https://github.com/bomtobe-hgkim/orke-linux/releases/download/v3.4.1/orke-3.4.1-linux-x64.tar.gz) | [SHA-256](https://github.com/bomtobe-hgkim/orke-linux/releases/download/v3.4.1/orke-3.4.1-linux-x64.tar.gz.sha256) | October 9, 2026; ChatGPT tab-state fix |
 | 3.4.0 | [Linux x64 tar.gz](https://github.com/bomtobe-hgkim/orke-linux/releases/download/v3.4.0/orke-3.4.0-linux-x64.tar.gz) | [SHA-256](https://github.com/bomtobe-hgkim/orke-linux/releases/download/v3.4.0/orke-3.4.0-linux-x64.tar.gz.sha256) | October 9, 2026; first Linux server release |
 
-For manual 3.4.1 installation, run in an empty download directory in SSH:
+For manual 3.4.4 installation, run in an empty download directory in SSH:
 
 ```bash
-mkdir -p "$HOME/orke-downloads/3.4.1"
-cd "$HOME/orke-downloads/3.4.1"
-curl -fLO https://github.com/bomtobe-hgkim/orke-linux/releases/download/v3.4.1/orke-3.4.1-linux-x64.tar.gz
-curl -fLO https://github.com/bomtobe-hgkim/orke-linux/releases/download/v3.4.1/orke-3.4.1-linux-x64.tar.gz.sha256
-sha256sum -c orke-3.4.1-linux-x64.tar.gz.sha256 && \
-  tar xzf orke-3.4.1-linux-x64.tar.gz && \
-  ./orke-3.4.1-linux-x64/install.sh
+mkdir -p "$HOME/orke-downloads/3.4.4"
+cd "$HOME/orke-downloads/3.4.4"
+curl -fLO https://github.com/bomtobe-hgkim/orke-linux/releases/download/v3.4.4/orke-3.4.4-linux-x64.tar.gz
+curl -fLO https://github.com/bomtobe-hgkim/orke-linux/releases/download/v3.4.4/orke-3.4.4-linux-x64.tar.gz.sha256
+sha256sum -c orke-3.4.4-linux-x64.tar.gz.sha256 && \
+  tar xzf orke-3.4.4-linux-x64.tar.gz && \
+  ./orke-3.4.4-linux-x64/install.sh
 ```
 
 Continue with ngrok/service setup above after the installer succeeds. The checksum must report `OK`; a failed check stops the `&&` chain. You can remove the downloaded archive/extracted package after installation; run the installed `~/.local/bin/orke` for service commands.
 
 ## Validation and help
 
-The public 3.4.0 package was exercised on one Ubuntu 24.04.5 x86_64 Google Cloud VM for installation, services, ngrok, agents and support. Public 3.4.1 specifically rechecked upgrading and the ChatGPT tab-state fix. The October 11 update/uninstall changes were separately exercised with a test package, including data preservation, refusal cases, purge and self-removal; that test package is not the current public download. Server-browser readiness/painting is a separate measurement and is not established by those tests.
+Linux 3.4.4 was checked on Ubuntu 24.04.5 x86_64. The packaged program upgraded an actual 3.4.1 user service, kept its data, answered management commands and ran a shell session. The UI document and 13 critical assets were served successfully and matched the package bytes. The virtual browser reached `ready` after an administrator configured the exact installation's SUID sandbox helper; this does not mean its GUI, IME or external sign-in flows were visually accepted. The installer never applies that administrator change automatically.
+
+The public 3.4.0 package was exercised on one Ubuntu 24.04.5 x86_64 Google Cloud VM for installation, services, ngrok, agents and support. Public 3.4.1 specifically rechecked upgrading and the ChatGPT tab-state fix. Those provider and ngrok measurements remain historical; they were not repeated with real provider questions for 3.4.4.
 
 The [earlier Linux installation guide](docs/linux.md#what-has-been-tested) preserves the older package's measured scope. The two public archives moved to this dedicated repository on October 11 without changing their bytes.
 
