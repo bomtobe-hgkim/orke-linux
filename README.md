@@ -667,6 +667,7 @@ The archive command runs only if stopping the service succeeds. Check any archiv
 | Codex is signed in, but support rejects its version or authentication | Use ChatGPT subscription sign-in and a CLI version compatible with the installed orke package; 0.160.1 was tested with the public server package. |
 | Browser says `연결하지 못했습니다` | Select **다시 연결** — **Reconnect**. Check `orke service status` and the daemon log if it persists. |
 | New server web browser is unavailable | Inspect `orke status --json` and the detailed log. Daemon readiness does not validate the Chromium sandbox; terminal-only mode is available on the new builds. |
+| `update` refuses with an Electron PID while the virtual browser is ready | In 3.4.4, Electron can move into its own systemd application scope and be classified as outside the service. From SSH, stop `orke.service`, rerun the one-line installer, then run `orke service restart`. Stopping the service ends its sessions. Administrator sandbox setup may need to be reapplied after replacement. The refusal itself changes no files. |
 
 When asking for help, include the version from **설정 → 정보** — **Settings → About**, your Ubuntu version, architecture, the failed command and its error. Remove access tokens, keys and private UI URLs from any shared log.
 
