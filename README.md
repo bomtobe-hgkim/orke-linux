@@ -354,7 +354,7 @@ It selects the latest published Linux version, checks the downloaded package and
 - `--version X.Y.Z` explicitly selects a published version, including an older one. An exact version match is still a no-op.
 - When a running service is replaced, its terminals/agents end and browser access briefly disconnects. New installers wait for daemon readiness before removing the previous payload.
 
-The older `3.4.1` is the October 9 package. Selecting it from a **different installed version** restores its older command surface, including the absence of `orke update` and `orke uninstall`. The current `3.4.6` includes those commands. The one-line reinstall below can replace package bytes even when the version number matches.
+Earlier Linux packages were withdrawn on October 13, 2026, so `--version` can select only `3.4.6`. The one-line reinstall below can replace package bytes even when the version number matches.
 
 ### Older 3.4.1: rerun the installer
 
@@ -661,7 +661,7 @@ The archive command runs only if stopping the service succeeds. Check any archiv
 | New `update` / `uninstall` / `wait-ready` command is unavailable | The public October 9 archive predates it. Use the older-version update/removal instructions until a release containing the command is installed. |
 | Update/removal says the installation is busy | Let the other installation finish. If a standalone `serve` is listed, stop it in its own terminal. Retry from SSH. |
 | `--purge` refuses because support rooms remain | Reopen orke, delete its support rooms/AIs and let cleanup finish before retrying. If the message says the service was stopped during its final check, follow its restart/recovery instructions first. |
-| `--purge` refuses with `Contains entries not created by orke: employees` | Linux 3.4.6 with a custom `ORKE_HOME` only: the daemon now creates an `employees` folder (AI employees) that the purge contents check does not list yet. Nothing is removed. Run `orke uninstall` without `--purge`, check that the folder holds only orke's data, then remove it manually. The default `~/.orke` is purged normally. |
+| `--purge` refuses with `Contains entries not created by orke: employees` | Only the first 3.4.6 build, replaced on October 13, 2026, with a custom `ORKE_HOME`. Nothing is removed. Reinstall 3.4.6 with `curl -fsSL https://orke.bomtobe.com/install.sh \| bash -s -- --version 3.4.6` (`orke update` keeps the same version), then retry. |
 | New installer replaced files but readiness failed | Preserve the printed previous-payload directory; inspect logs and follow that run's exact restoration commands. |
 | ngrok came from snap | Install ngrok from the apt instructions in this README; rerun `orke remote setup` to pin the correct executable. |
 | ngrok error 334 / another orke uses this address | Disconnect the other computer's tunnel, then restart this service when work can be stopped. |
@@ -678,11 +678,9 @@ When asking for help, include the version from **설정 → 정보** — **Setti
 
 | Version | Package | Checksum | Original release |
 | --- | --- | --- | --- |
-| **3.4.6** | [Linux x64 tar.gz](https://github.com/bomtobe-hgkim/orke-linux/releases/download/v3.4.6/orke-3.4.6-linux-x64.tar.gz) | [SHA-256](https://github.com/bomtobe-hgkim/orke-linux/releases/download/v3.4.6/orke-3.4.6-linux-x64.tar.gz.sha256) | October 13, 2026; AI employees, Korean input commits in terminals, smaller fixes |
-| 3.4.5 | [Linux x64 tar.gz](https://github.com/bomtobe-hgkim/orke-linux/releases/download/v3.4.5/orke-3.4.5-linux-x64.tar.gz) | [SHA-256](https://github.com/bomtobe-hgkim/orke-linux/releases/download/v3.4.5/orke-3.4.5-linux-x64.tar.gz.sha256) | October 12, 2026; fixes update/removal with an active service browser |
-| 3.4.4 | [Linux x64 tar.gz](https://github.com/bomtobe-hgkim/orke-linux/releases/download/v3.4.4/orke-3.4.4-linux-x64.tar.gz) | [SHA-256](https://github.com/bomtobe-hgkim/orke-linux/releases/download/v3.4.4/orke-3.4.4-linux-x64.tar.gz.sha256) | October 12, 2026; update/removal commands and server browser; active-browser CLI refusal fixed in 3.4.5 |
-| 3.4.1 | [Linux x64 tar.gz](https://github.com/bomtobe-hgkim/orke-linux/releases/download/v3.4.1/orke-3.4.1-linux-x64.tar.gz) | [SHA-256](https://github.com/bomtobe-hgkim/orke-linux/releases/download/v3.4.1/orke-3.4.1-linux-x64.tar.gz.sha256) | October 9, 2026; ChatGPT tab-state fix |
-| 3.4.0 | [Linux x64 tar.gz](https://github.com/bomtobe-hgkim/orke-linux/releases/download/v3.4.0/orke-3.4.0-linux-x64.tar.gz) | [SHA-256](https://github.com/bomtobe-hgkim/orke-linux/releases/download/v3.4.0/orke-3.4.0-linux-x64.tar.gz.sha256) | October 9, 2026; first Linux server release |
+| **3.4.6** | [Linux x64 tar.gz](https://github.com/bomtobe-hgkim/orke-linux/releases/download/v3.4.6/orke-3.4.6-linux-x64.tar.gz) | [SHA-256](https://github.com/bomtobe-hgkim/orke-linux/releases/download/v3.4.6/orke-3.4.6-linux-x64.tar.gz.sha256) | October 13, 2026; AI employees, Korean input commits in terminals, `--purge` with a custom `ORKE_HOME`, smaller fixes |
+
+Earlier Linux packages (3.4.0 to 3.4.5) were withdrawn on October 13, 2026; 3.4.6 is the only published Linux package.
 
 For manual 3.4.6 installation, run in an empty download directory in SSH:
 
@@ -700,7 +698,7 @@ Continue with ngrok/service setup above after the installer succeeds. The checks
 
 ## Validation and help
 
-Linux **3.4.6** was checked on Ubuntu 24.04.5 x86_64. The ordinary gates passed on Windows (21,690 tests) and Ubuntu (21,314), alongside 19 Linux-specific checks on Ubuntu and 13 slow JavaScript and 5 actual-Electron checks on each platform. The package replaced a running 3.4.5 user service, kept its data, answered management commands, ran a shell session through the CLI, served the UI document and 13 critical assets identical to the package, and reached a ready virtual browser after an administrator configured that installation's SUID sandbox helper. After publication, the one-line installer pinned to 3.4.5, `orke update` then moved to 3.4.6 and a second `orke update` changed nothing; removal kept data, and a fresh one-line installation chose 3.4.6. `orke uninstall --purge` removed everything with the default `~/.orke` but refused a custom `ORKE_HOME` because of the new `employees` folder (see [troubleshooting](#troubleshooting)). Korean terminal input with IBus Hangul was measured separately in Electron on the same VM. GUI and real-provider/ngrok acceptance were not repeated for this release.
+Linux **3.4.6** (the build republished on October 13, 2026 with the `--purge` fix) was checked on Ubuntu 24.04.5 x86_64. The ordinary gates passed on Windows (21,693 tests, on the fix branch) and Ubuntu (21,316 passed; one support-shutdown timing check failed once in the full run and passed five repeated runs alone), alongside 19 Linux-specific checks on Ubuntu and 13 slow JavaScript and 5 actual-Electron checks on each platform. The package replaced a running 3.4.5 user service, kept its data, answered management commands, ran a shell session through the CLI, served the UI document and 13 critical assets identical to the package, and reached a ready virtual browser after an administrator configured that installation's SUID sandbox helper. `orke uninstall --purge` removed a custom `ORKE_HOME` that held the `employees` folder, which the first 3.4.6 build refused, and the default `~/.orke`. After publication, a fresh one-line installation installed this build's program, `orke update` changed nothing, and `--purge` removed the custom `ORKE_HOME`. Korean terminal input with IBus Hangul was measured separately in Electron on the same VM. GUI and real-provider/ngrok acceptance were not repeated for this release.
 
 Linux 3.4.5 was checked on Ubuntu 24.04.5 x86_64 with a ready virtual browser. The old 3.4.4 CLI refusal was reproduced; the fixed CLI's same-version update returned 0 and preserved the daemon PID. Actual replacement, an installed 3.4.5 no-op, removal with the browser active and retained data passed. A separate executable running from the installation still blocked update. The ordinary gates passed on Windows (21,390 tests) and Ubuntu (21,032), alongside 19 Linux-specific checks, 13 slow JavaScript checks and 5 actual-Electron checks per platform. GUI and real-provider/ngrok acceptance were not repeated for this correction.
 
@@ -708,6 +706,6 @@ Linux 3.4.4 was checked on Ubuntu 24.04.5 x86_64. The packaged program upgraded 
 
 The public 3.4.0 package was exercised on one Ubuntu 24.04.5 x86_64 Google Cloud VM for installation, services, ngrok, agents and support. Public 3.4.1 specifically rechecked upgrading and the ChatGPT tab-state fix. Those provider and ngrok measurements remain historical; they were not repeated with real provider questions for 3.4.4.
 
-The [earlier Linux installation guide](docs/linux.md#what-has-been-tested) preserves the older package's measured scope. The two public archives moved to this dedicated repository on October 11 without changing their bytes.
+The [earlier Linux installation guide](docs/linux.md#what-has-been-tested) preserves the older package's measured scope. Those older packages are no longer published.
 
 [Homepage](https://orke.bomtobe.com) · [Support & FAQ](https://orke.bomtobe.com/support/) · [Mac downloads](https://github.com/bomtobe-hgkim/orke-mac) · [Windows Store](https://apps.microsoft.com/detail/9N7G0NK63QGR) · [Contact: bomtobe.sw@gmail.com](mailto:bomtobe.sw@gmail.com)
