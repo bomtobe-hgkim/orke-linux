@@ -16,10 +16,10 @@
   <a href="https://orke.bomtobe.com/support/">Support</a>
 </p>
 
-This README takes you from a fresh Ubuntu server to a running workspace, then covers everyday commands, updates, removal and troubleshooting. Linux 3.4.6 supports interface language selection and uses English for default server and CLI output. Korean interface labels below include their English meanings.
+This README takes you from a fresh Ubuntu server to a running workspace, then covers everyday commands, updates, removal and troubleshooting. Linux 3.4.8 supports interface language selection and uses English for default server and CLI output. Korean interface labels below include their English meanings.
 
 > [!IMPORTANT]
-> **Check which Linux build you have.** The current public download is **3.4.6, released on October 13, 2026**. It includes `orke update`, `orke uninstall`, `--purge`, service readiness checks, session/package control commands and the server browser. Existing 3.4.1 users should rerun the one-line installer below to upgrade; that older package has no `orke update` command. Updating a running service ends its active terminal and agent sessions, so run the upgrade from SSH when those sessions can be stopped.
+> **Check which Linux build you have.** The current public download is **3.4.8, released on October 15, 2026**. It includes `orke update`, `orke uninstall`, `--purge`, service readiness checks, session/package control commands and the server browser. Existing 3.4.1 users should rerun the one-line installer below to upgrade; that older package has no `orke update` command. Updating a running service ends its active terminal and agent sessions, so run the upgrade from SSH when those sessions can be stopped.
 
 ## Contents
 
@@ -54,7 +54,7 @@ This README takes you from a fresh Ubuntu server to a running workspace, then co
 
 The package includes its .NET runtime. **You do not need to build orke or install the .NET SDK.** Node.js/npm below are for one Codex installation method, not for running orke itself.
 
-| Capability | Older Linux 3.4.1 | Current Linux 3.4.6 |
+| Capability | Older Linux 3.4.1 | Current Linux 3.4.8 |
 | --- | --- | --- |
 | Terminal sessions, agents, Git, browser access to the workspace, orke support | Available | Available |
 | `serve`, `remote setup`, service install/status/restart/removal | Available | Available |
@@ -78,7 +78,7 @@ sudo apt-get install -y libicu74 ca-certificates procps curl git tar gzip coreut
   libxrandr2 libgbm1 libasound2t64
 ```
 
-These cover Linux 3.4.6, including its [browser dependencies](#session-commands-and-server-web-windows), even when you plan to use terminals only. If an installer reports missing packages, run the exact `apt-get` command it prints and retry.
+These cover Linux 3.4.8, including its [browser dependencies](#session-commands-and-server-web-windows), even when you plan to use terminals only. If an installer reports missing packages, run the exact `apt-get` command it prints and retry.
 
 ### Run the installer
 
@@ -192,7 +192,7 @@ loginctl show-user "$(id -un)" -p Linger
 
 Expected values are `active` and `Linger=yes`. `orke service status` provides diagnostics even if a service is stopped or missing; its exit code alone is not a readiness check.
 
-**Linux 3.4.6:** `service install` and `service restart` also wait for the daemon to answer. The server web browser and ngrok have their own status, so a ready daemon does not guarantee either connection is ready. See [readiness and recovery](#service-readiness-and-recovery).
+**Linux 3.4.8:** `service install` and `service restart` also wait for the daemon to answer. The server web browser and ngrok have their own status, so a ready daemon does not guarantee either connection is ready. See [readiness and recovery](#service-readiness-and-recovery).
 
 ### Optional foreground test
 
@@ -314,7 +314,7 @@ Run service maintenance, updates and removal in **SSH**, outside orke's own term
 | Latest service events | `journalctl --user -u orke.service -n 50 --no-pager` | Startup/failure and systemd events |
 | Follow detailed logs | `tail -f ~/.orke/logs/daemon.log` | Live daemon/connection details; Ctrl+C stops only the log viewer |
 
-**Linux 3.4.6** includes the following commands:
+**Linux 3.4.8** includes the following commands:
 
 | Task | Command |
 | --- | --- |
@@ -337,7 +337,7 @@ An administrator can add orke's range, **47620–48643 plus 48700**, to that lis
 
 ## Update or choose a version
 
-### Linux 3.4.6: update in one command
+### Linux 3.4.8: update in one command
 
 From SSH, when the running sessions can be stopped:
 
@@ -354,7 +354,7 @@ It selects the latest published Linux version, checks the downloaded package and
 - `--version X.Y.Z` explicitly selects a published version, including an older one. An exact version match is still a no-op.
 - When a running service is replaced, its terminals/agents end and browser access briefly disconnects. New installers wait for daemon readiness before removing the previous payload.
 
-Earlier Linux packages were withdrawn on October 13, 2026, so `--version` can select only `3.4.6`. The one-line reinstall below can replace package bytes even when the version number matches.
+As of October 15, 2026, all earlier Linux releases have been withdrawn, so `--version` can select only `3.4.8`. The one-line reinstall below can replace package bytes even when the version number matches.
 
 ### Older 3.4.1: rerun the installer
 
@@ -367,7 +367,7 @@ curl -fsSL https://orke.bomtobe.com/install.sh | bash
 For the current version explicitly:
 
 ```bash
-curl -fsSL https://orke.bomtobe.com/install.sh | bash -s -- --version 3.4.6
+curl -fsSL https://orke.bomtobe.com/install.sh | bash -s -- --version 3.4.8
 ```
 
 Rerunning the one-line installer can reinstall the same version and restart its running service. If a foreground `orke serve` is running, stop it with Ctrl+C in its own SSH terminal first.
@@ -376,7 +376,7 @@ Rerunning the one-line installer can reinstall the same version and restart its 
 
 Choose whether you want to keep settings and records. **The new uninstall command does not ask for confirmation.** Run it as the installing user from SSH.
 
-### Linux 3.4.6: remove the program and keep data
+### Linux 3.4.8: remove the program and keep data
 
 ```bash
 orke uninstall
@@ -384,7 +384,7 @@ orke uninstall
 
 This stops/removes the user service, deletes the installed program and its command link, and cleans up installer-owned leftover folders. It preserves the settings and records under the actual `ORKE_HOME`, normally `~/.orke`, so a later installation can reuse them.
 
-### Linux 3.4.6: also erase orke's data
+### Linux 3.4.8: also erase orke's data
 
 If you used **orke support**, first delete its rooms/AIs in orke while it is running and let their associated history cleanup finish. Purge refuses while support rooms, test rooms or rooms still being deleted remain.
 
@@ -428,7 +428,7 @@ These paths assume the default data location. If you used `ORKE_HOME`, use the a
 
 ## Service readiness and recovery
 
-**Linux 3.4.6.** `service install` and `service restart` verify that the intended installed daemon answers; `wait-ready` performs the same check without installing or restarting it:
+**Linux 3.4.8.** `service install` and `service restart` verify that the intended installed daemon answers; `wait-ready` performs the same check without installing or restarting it:
 
 ```bash
 orke service wait-ready --timeout 120
@@ -459,7 +459,7 @@ The older 3.4.1 package does not provide these readiness/retention guarantees. T
 
 ## Session commands and server web windows
 
-**Linux 3.4.6.** The package includes a control CLI and a server-owned virtual display for web windows. These capabilities are absent from the older October 9 archive.
+**Linux 3.4.8.** The package includes a control CLI and a server-owned virtual display for web windows. These capabilities are absent from the older October 9 archive.
 
 Useful read-only commands after the daemon starts:
 
@@ -506,7 +506,7 @@ Inspect the session before sending input. `--submit true` requests Enter; succes
 
 ### Browser dependencies and status
 
-Linux 3.4.6 requires these additional Ubuntu packages:
+Linux 3.4.8 requires these additional Ubuntu packages:
 
 ```bash
 sudo apt-get install -y xvfb libnss3 libgtk-3-0t64 libatk1.0-0t64 \
@@ -661,7 +661,7 @@ The archive command runs only if stopping the service succeeds. Check any archiv
 | New `update` / `uninstall` / `wait-ready` command is unavailable | The public October 9 archive predates it. Use the older-version update/removal instructions until a release containing the command is installed. |
 | Update/removal says the installation is busy | Let the other installation finish. If a standalone `serve` is listed, stop it in its own terminal. Retry from SSH. |
 | `--purge` refuses because support rooms remain | Reopen orke, delete its support rooms/AIs and let cleanup finish before retrying. If the message says the service was stopped during its final check, follow its restart/recovery instructions first. |
-| `--purge` refuses with `Contains entries not created by orke: employees` | Only the first 3.4.6 build, replaced on October 13, 2026, with a custom `ORKE_HOME`. Nothing is removed. Reinstall 3.4.6 with `curl -fsSL https://orke.bomtobe.com/install.sh \| bash -s -- --version 3.4.6` (`orke update` keeps the same version), then retry. |
+| `--purge` refuses with `Contains entries not created by orke: employees` | Only the first 3.4.6 build, replaced on October 13, 2026, with a custom `ORKE_HOME`. Nothing is removed. Upgrade to 3.4.8 with `curl -fsSL https://orke.bomtobe.com/install.sh \| bash -s -- --version 3.4.8` or run `orke update`, then retry. |
 | New installer replaced files but readiness failed | Preserve the printed previous-payload directory; inspect logs and follow that run's exact restoration commands. |
 | ngrok came from snap | Install ngrok from the apt instructions in this README; rerun `orke remote setup` to pin the correct executable. |
 | ngrok error 334 / another orke uses this address | Disconnect the other computer's tunnel, then restart this service when work can be stopped. |
@@ -678,25 +678,27 @@ When asking for help, include the version from **설정 → 정보** — **Setti
 
 | Version | Package | Checksum | Original release |
 | --- | --- | --- | --- |
-| **3.4.6** | [Linux x64 tar.gz](https://github.com/bomtobe-hgkim/orke-linux/releases/download/v3.4.6/orke-3.4.6-linux-x64.tar.gz) | [SHA-256](https://github.com/bomtobe-hgkim/orke-linux/releases/download/v3.4.6/orke-3.4.6-linux-x64.tar.gz.sha256) | October 13, 2026; AI employees, Korean input commits in terminals, `--purge` with a custom `ORKE_HOME`, smaller fixes |
+| **3.4.8** | [Linux x64 tar.gz](https://github.com/bomtobe-hgkim/orke-linux/releases/download/v3.4.8/orke-3.4.8-linux-x64.tar.gz) | [SHA-256](https://github.com/bomtobe-hgkim/orke-linux/releases/download/v3.4.8/orke-3.4.8-linux-x64.tar.gz.sha256) | October 15, 2026; phone and tablet screens, AI employee and repeat-task controls, authoring conversations, worker browser-tab cleanup, terminal glyph and Korean input fixes |
 
-Earlier Linux packages (3.4.0 to 3.4.5) were withdrawn on October 13, 2026; 3.4.6 is the only published Linux package.
+As of October 15, 2026, 3.4.8 is the only published Linux package; all earlier packages have been withdrawn.
 
-For manual 3.4.6 installation, run in an empty download directory in SSH:
+For manual 3.4.8 installation, run in an empty download directory in SSH:
 
 ```bash
-mkdir -p "$HOME/orke-downloads/3.4.6"
-cd "$HOME/orke-downloads/3.4.6"
-curl -fLO https://github.com/bomtobe-hgkim/orke-linux/releases/download/v3.4.6/orke-3.4.6-linux-x64.tar.gz
-curl -fLO https://github.com/bomtobe-hgkim/orke-linux/releases/download/v3.4.6/orke-3.4.6-linux-x64.tar.gz.sha256
-sha256sum -c orke-3.4.6-linux-x64.tar.gz.sha256 && \
-  tar xzf orke-3.4.6-linux-x64.tar.gz && \
-  ./orke-3.4.6-linux-x64/install.sh
+mkdir -p "$HOME/orke-downloads/3.4.8"
+cd "$HOME/orke-downloads/3.4.8"
+curl -fLO https://github.com/bomtobe-hgkim/orke-linux/releases/download/v3.4.8/orke-3.4.8-linux-x64.tar.gz
+curl -fLO https://github.com/bomtobe-hgkim/orke-linux/releases/download/v3.4.8/orke-3.4.8-linux-x64.tar.gz.sha256
+sha256sum -c orke-3.4.8-linux-x64.tar.gz.sha256 && \
+  tar xzf orke-3.4.8-linux-x64.tar.gz && \
+  ./orke-3.4.8-linux-x64/install.sh
 ```
 
 Continue with ngrok/service setup above after the installer succeeds. The checksum must report `OK`; a failed check stops the `&&` chain. You can remove the downloaded archive/extracted package after installation; run the installed `~/.local/bin/orke` for service commands.
 
 ## Validation and help
+
+Linux **3.4.8** was built and checked on Ubuntu 24.04.5 x86_64 from product source `c8a07c32ae664a8b757541ff725594456e4c6042`. The Release build succeeded; the ordinary .NET gate passed 21,632 tests with 377 skipped and no failures. All 19 Linux-specific checks, 13 slow JavaScript checks and 6 actual-Electron checks passed. Packaging verified the CLI distribution, native runtime files and Electron 44.4.3 payload. The 188,024,047-byte archive has SHA-256 `001a53ba6ce84379d52381408f2afa60dd31bd616c2a8b8306877e51522d69b3`. GUI, real-provider questions and external sign-in flows were not retested for this release. Earlier measurements below remain historical.
 
 Linux **3.4.6** (the build republished on October 13, 2026 with the `--purge` fix) was checked on Ubuntu 24.04.5 x86_64. The ordinary gates passed on Windows (21,693 tests, on the fix branch) and Ubuntu (21,316 passed; one support-shutdown timing check failed once in the full run and passed five repeated runs alone), alongside 19 Linux-specific checks on Ubuntu and 13 slow JavaScript and 5 actual-Electron checks on each platform. The package replaced a running 3.4.5 user service, kept its data, answered management commands, ran a shell session through the CLI, served the UI document and 13 critical assets identical to the package, and reached a ready virtual browser after an administrator configured that installation's SUID sandbox helper. `orke uninstall --purge` removed a custom `ORKE_HOME` that held the `employees` folder, which the first 3.4.6 build refused, and the default `~/.orke`. After publication, a fresh one-line installation installed this build's program, `orke update` changed nothing, and `--purge` removed the custom `ORKE_HOME`. Korean terminal input with IBus Hangul was measured separately in Electron on the same VM. GUI and real-provider/ngrok acceptance were not repeated for this release.
 
