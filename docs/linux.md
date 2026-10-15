@@ -1,6 +1,6 @@
 # Install orke on a Linux server
 
-> The current Linux release is **3.4.8 (October 15, 2026)**. Use the [main README](../README.md) for its installation requirements, server browser, `orke update`, `orke uninstall` and readiness commands. This page preserves the historical October 9 Linux 3.4.1 installation flow and measurements; its older package examples and Korean output describe that release. Earlier Linux packages, including 3.4.1, were withdrawn on October 13, 2026; the remaining 3.4.6 release was withdrawn on October 15, 2026. The 3.4.1 download and `--version 3.4.1` commands below no longer work: use the README's [manual download](../README.md#download-manually) for 3.4.8.
+> The current Linux release is **3.4.9 (October 15, 2026)**. Use the [main README](../README.md) for its installation requirements, server browser, `orke update`, `orke uninstall` and readiness commands. This page preserves the historical October 9 Linux 3.4.1 installation flow and measurements; its older package examples and Korean output describe that release. Earlier Linux packages, including 3.4.1, were withdrawn on October 13, 2026; the remaining 3.4.6 release was withdrawn on October 15, 2026. The 3.4.1 download and `--version 3.4.1` commands below no longer work: use the README's [manual download](../README.md#download-manually) for 3.4.9.
 
 The Linux package runs orke on a server that has no screen, such as a cloud VM. You install it over SSH with one command:
 
