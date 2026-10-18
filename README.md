@@ -357,7 +357,7 @@ It selects the latest published Linux version, checks the downloaded package and
 - `--version X.Y.Z` explicitly selects a published version, including an older one. An exact version match is still a no-op.
 - When a running service is replaced, its terminals/agents end and browser access briefly disconnects. New installers wait for daemon readiness before removing the previous payload.
 
-The current release is 3.4.10. Versions 3.4.9 and 3.4.8 also remain available through `--version 3.4.9` or `--version 3.4.8`; they use ngrok for browser access, as described in the [3.4.9 README](https://github.com/bomtobe-hgkim/orke-linux/blob/v3.4.9/README.md). Older Linux releases have been withdrawn. The one-line reinstall below can replace package bytes even when the version number matches.
+The current release is 3.4.10. As of October 18, 2026, it is the only available Linux release; earlier releases and their version tags have been removed. The one-line reinstall below can replace package bytes even when the version number matches.
 
 ### Older 3.4.1: rerun the installer
 
@@ -685,10 +685,8 @@ When asking for help, include the version from **설정 → 정보** — **Setti
 | Version | Package | Checksum | Original release |
 | --- | --- | --- | --- |
 | **3.4.10** | [Linux x64 tar.gz](https://github.com/bomtobe-hgkim/orke-linux/releases/download/v3.4.10/orke-3.4.10-linux-x64.tar.gz) | [SHA-256](https://github.com/bomtobe-hgkim/orke-linux/releases/download/v3.4.10/orke-3.4.10-linux-x64.tar.gz.sha256) | October 17, 2026; Google sign-in and direct HTTPS access replace ngrok, automatic IP certificates, web-page automation that can press Enter |
-| **3.4.9** | [Linux x64 tar.gz](https://github.com/bomtobe-hgkim/orke-linux/releases/download/v3.4.9/orke-3.4.9-linux-x64.tar.gz) | [SHA-256](https://github.com/bomtobe-hgkim/orke-linux/releases/download/v3.4.9/orke-3.4.9-linux-x64.tar.gz.sha256) | October 15, 2026; persistent web previews beside AI employees and repeat tasks, following the AI's active page, and companion lifetime fixes |
-| **3.4.8** | [Linux x64 tar.gz](https://github.com/bomtobe-hgkim/orke-linux/releases/download/v3.4.8/orke-3.4.8-linux-x64.tar.gz) | [SHA-256](https://github.com/bomtobe-hgkim/orke-linux/releases/download/v3.4.8/orke-3.4.8-linux-x64.tar.gz.sha256) | October 15, 2026; phone and tablet screens, AI employee and repeat-task controls, authoring conversations, worker browser-tab cleanup, terminal glyph and Korean input fixes |
 
-As of October 17, 2026, 3.4.10 is the latest Linux package. Versions 3.4.9 and 3.4.8 remain available and use ngrok for browser access; earlier packages have been withdrawn.
+As of October 18, 2026, only 3.4.10 is available. Earlier release archives, checksums and version tags have been removed. Historical verification notes below describe the builds measured on their original dates.
 
 For manual 3.4.10 installation, run in an empty download directory in SSH:
 
