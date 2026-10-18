@@ -16,10 +16,10 @@
   <a href="https://orke.bomtobe.com/support/">Support</a>
 </p>
 
-This README takes you from a fresh Ubuntu server to a running workspace, then covers everyday commands, updates, removal and troubleshooting. Linux 3.4.10 supports interface language selection and uses English for default server and CLI output. Korean interface labels below include their English meanings.
+This README takes you from a fresh Ubuntu server to a running workspace, then covers everyday commands, updates, removal and troubleshooting. Linux 3.4.11 supports interface language selection and uses English for default server and CLI output. Korean interface labels below include their English meanings.
 
 > [!IMPORTANT]
-> **Check which Linux build you have.** The current public download is **3.4.10, released on October 17, 2026**. **Browser access changed in this version: ngrok is no longer used.** You sign in to orke with your Google account (`orke login`), and browsers connect directly over HTTPS to the server's public IPv4 address (default port 48650). orke can obtain and renew that HTTPS certificate from Let's Encrypt, or you can import your own. If you update from 3.4.9 or earlier, your ngrok settings are no longer used: after updating, follow [steps 3–5](#3-sign-in-with-your-google-account) or use an [SSH tunnel](#connect-through-an-ssh-tunnel). Web-page automation can now also press Enter and works on more real websites. It includes `orke update`, `orke uninstall`, `--purge`, service readiness checks, session/package control commands and the server browser. Existing 3.4.1 users should rerun the one-line installer below to upgrade; that older package has no `orke update` command. Updating a running service ends its active terminal and agent sessions, so run the upgrade from SSH when those sessions can be stopped.
+> **Check which Linux build you have.** The current public download is **3.4.11, released on October 18, 2026**. **Browser access uses Google sign-in and direct HTTPS, introduced in 3.4.10; ngrok is no longer used.** You sign in to orke with your Google account (`orke login`), and browsers connect directly over HTTPS to the server's public IPv4 address (default port 48650). orke can obtain and renew that HTTPS certificate from Let's Encrypt, or you can import your own. If you update from 3.4.9 or earlier, your ngrok settings are no longer used: after updating, follow [steps 3–5](#3-sign-in-with-your-google-account) or use an [SSH tunnel](#connect-through-an-ssh-tunnel). Version 3.4.11 expands the local operator CLI for settings, provider accounts and usage, employees, packages and orke support; command help now explains options and conditions. Web-page automation can also press Enter. It includes `orke update`, `orke uninstall`, `--purge`, service readiness checks, session/package control commands and the server browser. Existing 3.4.1 users should rerun the one-line installer below to upgrade; that older package has no `orke update` command. Updating a running service ends its active terminal and agent sessions, so run the upgrade from SSH when those sessions can be stopped.
 
 ## Contents
 
@@ -56,7 +56,7 @@ This README takes you from a fresh Ubuntu server to a running workspace, then co
 
 The package includes its .NET runtime. **You do not need to build orke or install the .NET SDK.** Node.js/npm below are for one Codex installation method, not for running orke itself.
 
-| Capability | Older Linux 3.4.1 | Current Linux 3.4.10 |
+| Capability | Older Linux 3.4.1 | Current Linux 3.4.11 |
 | --- | --- | --- |
 | Terminal sessions, agents, Git, browser access to the workspace, orke support | Available | Available |
 | `serve`, `remote setup`, service install/status/restart/removal | Available | Available |
@@ -81,7 +81,7 @@ sudo apt-get install -y libicu74 ca-certificates procps curl git tar gzip coreut
   libxrandr2 libgbm1 libasound2t64
 ```
 
-These cover Linux 3.4.10, including its [browser dependencies](#session-commands-and-server-web-windows), even when you plan to use terminals only. If an installer reports missing packages, run the exact `apt-get` command it prints and retry.
+These cover Linux 3.4.11, including its [browser dependencies](#session-commands-and-server-web-windows), even when you plan to use terminals only. If an installer reports missing packages, run the exact `apt-get` command it prints and retry.
 
 ### Run the installer
 
@@ -97,7 +97,7 @@ The script selects the newest published Linux package, downloads it from this re
 | Command | `~/.local/bin/orke` |
 | Settings, account information and records | `~/.orke` |
 
-Look for a line beginning `Installed orke 3.4.10`. Installation alone does not set up browser access or the background service; continue with the next steps.
+Look for a line beginning `Installed orke 3.4.11`. Installation alone does not set up browser access or the background service; continue with the next steps.
 
 ### Make the command available in this SSH session
 
@@ -140,9 +140,9 @@ loginctl show-user "$(id -un)" -p Linger
 
 Expected values are `active` and `Linger=yes`. `orke service status` provides diagnostics even if a service is stopped or missing; its exit code alone is not a readiness check.
 
-**Linux 3.4.10:** `service install` and `service restart` also wait for the daemon to answer. The server web browser and HTTPS access have their own status, so a ready daemon does not guarantee either is ready. See [readiness and recovery](#service-readiness-and-recovery).
+**Linux 3.4.11:** `service install` and `service restart` also wait for the daemon to answer. The server web browser and HTTPS access have their own status, so a ready daemon does not guarantee either is ready. See [readiness and recovery](#service-readiness-and-recovery).
 
-Until HTTPS access is set up in step 4, `service install` and `service status` also print `No ngrok settings in ORKE_HOME …`. That sentence is left over from earlier versions: 3.4.10 does not use ngrok, and the `orke remote setup` it mentions is the step 4 command.
+Until HTTPS access is set up in step 4, `service install` and `service status` also print `No ngrok settings in ORKE_HOME …`. That sentence is left over from earlier versions: 3.4.11 does not use ngrok, and the `orke remote setup` it mentions is the step 4 command.
 
 ### Optional foreground test
 
@@ -152,7 +152,7 @@ If you want to test before installing a service:
 orke serve
 ```
 
-It stays attached to this SSH terminal. Its first line, `orke: Open the UI via the ngrok address (or run ssh -L …)`, still mentions ngrok; in 3.4.10 open the UI through HTTPS access (steps 3–5) or the [SSH tunnel](#connect-through-an-ssh-tunnel) it describes. Press **Ctrl+C** to stop the foreground process before running `orke service install`. If the service is already running, use its status/restart commands instead of starting a second daemon.
+It stays attached to this SSH terminal. Its first line, `orke: Open the UI via the ngrok address (or run ssh -L …)`, still mentions ngrok; in 3.4.11 open the UI through HTTPS access (steps 3–5) or the [SSH tunnel](#connect-through-an-ssh-tunnel) it describes. Press **Ctrl+C** to stop the foreground process before running `orke service install`. If the service is already running, use its status/restart commands instead of starting a second daemon.
 
 ## 3. Sign in with your Google account
 
@@ -315,7 +315,7 @@ Run service maintenance, updates and removal in **SSH**, outside orke's own term
 | Latest service events | `journalctl --user -u orke.service -n 50 --no-pager` | Startup/failure and systemd events |
 | Follow detailed logs | `tail -f ~/.orke/logs/daemon.log` | Live daemon/connection details; Ctrl+C stops only the log viewer |
 
-**Linux 3.4.10** includes the following commands:
+**Linux 3.4.11** includes the following commands:
 
 | Task | Command |
 | --- | --- |
@@ -325,6 +325,23 @@ Run service maintenance, updates and removal in **SSH**, outside orke's own term
 | Remove those items and orke's data | `orke uninstall --purge` |
 | Check daemon readiness | `orke service wait-ready` |
 | Allow up to 120 seconds for daemon readiness | `orke service wait-ready --timeout 120` |
+
+### Settings, accounts, employees and support from SSH
+
+Version 3.4.11 expands the local operator CLI. Run management commands as the same OS user as the running daemon. Help works without starting or connecting to a daemon:
+
+```bash
+orke --help
+orke help --json
+orke settings --help
+orke agent-account --help
+orke usage --help
+orke employee --help
+orke support --help
+orke isolation --help
+```
+
+The same stored settings, employee documents, package definitions and support configuration are shared with the UI. Use the revision returned by a read before saving a document or changing a definition. Secret inputs use `--stdin`; stored secrets are omitted from reads, and newly issued support keys are returned once. Follow the platform and role limits in each command's help. Browser authentication and site permissions still require the person using that browser.
 
 ### Optional port reservation
 
@@ -338,7 +355,7 @@ An administrator can add orke's range, **47620–48643 plus 48700**, to that lis
 
 ## Update or choose a version
 
-### Linux 3.4.10: update in one command
+### Linux 3.4.11: update in one command
 
 From SSH, when the running sessions can be stopped:
 
@@ -348,7 +365,7 @@ orke update
 
 It selects the latest published Linux version, checks the downloaded package and uses orke's installer. Settings and records are kept.
 
-**Updating from 3.4.9 or earlier:** 3.4.10 no longer uses ngrok, so the ngrok address stops opening orke. After the update, sign in with `orke login` and turn on HTTPS access ([steps 3–4](#3-sign-in-with-your-google-account)), or use an [SSH tunnel](#connect-through-an-ssh-tunnel). ngrok itself stays installed; remove it separately if you no longer need it.
+**Updating from 3.4.9 or earlier:** 3.4.11 no longer uses ngrok, so the ngrok address stops opening orke. After the update, sign in with `orke login` and turn on HTTPS access ([steps 3–4](#3-sign-in-with-your-google-account)), or use an [SSH tunnel](#connect-through-an-ssh-tunnel). ngrok itself stays installed; remove it separately if you no longer need it.
 
 **Upgrading from 3.4.4 with its browser active:** that version's CLI can mistake the service browser's application scope for an independent process and refuse before installation. Rerun the one-line installer from SSH when sessions can end to obtain 3.4.5 or later. Once 3.4.5 or later is installed, `orke update` and `orke uninstall` recognize the service browser; independent programs and processes surviving service stop still block replacement/removal.
 
@@ -357,7 +374,7 @@ It selects the latest published Linux version, checks the downloaded package and
 - `--version X.Y.Z` explicitly selects a published version, including an older one. An exact version match is still a no-op.
 - When a running service is replaced, its terminals/agents end and browser access briefly disconnects. New installers wait for daemon readiness before removing the previous payload.
 
-The current release is 3.4.10. As of October 18, 2026, it is the only available Linux release; earlier releases and their version tags have been removed. The one-line reinstall below can replace package bytes even when the version number matches.
+The current release is 3.4.11. Version 3.4.10 remains available; older releases and their version tags were removed on October 18, 2026. The one-line reinstall below can replace package bytes even when the version number matches.
 
 ### Older 3.4.1: rerun the installer
 
@@ -370,7 +387,7 @@ curl -fsSL https://orke.bomtobe.com/install.sh | bash
 For the current version explicitly:
 
 ```bash
-curl -fsSL https://orke.bomtobe.com/install.sh | bash -s -- --version 3.4.10
+curl -fsSL https://orke.bomtobe.com/install.sh | bash -s -- --version 3.4.11
 ```
 
 Rerunning the one-line installer can reinstall the same version and restart its running service. If a foreground `orke serve` is running, stop it with Ctrl+C in its own SSH terminal first.
@@ -379,7 +396,7 @@ Rerunning the one-line installer can reinstall the same version and restart its 
 
 Choose whether you want to keep settings and records. **The new uninstall command does not ask for confirmation.** Run it as the installing user from SSH.
 
-### Linux 3.4.10: remove the program and keep data
+### Linux 3.4.11: remove the program and keep data
 
 ```bash
 orke uninstall
@@ -387,7 +404,7 @@ orke uninstall
 
 This stops/removes the user service, deletes the installed program and its command link, and cleans up installer-owned leftover folders. It preserves the settings and records under the actual `ORKE_HOME`, normally `~/.orke`, so a later installation can reuse them.
 
-### Linux 3.4.10: also erase orke's data
+### Linux 3.4.11: also erase orke's data
 
 If you used **orke support**, first delete its rooms/AIs in orke while it is running and let their associated history cleanup finish. Purge refuses while support rooms, test rooms or rooms still being deleted remain.
 
@@ -431,7 +448,7 @@ These paths assume the default data location. If you used `ORKE_HOME`, use the a
 
 ## Service readiness and recovery
 
-**Linux 3.4.10.** `service install` and `service restart` verify that the intended installed daemon answers; `wait-ready` performs the same check without installing or restarting it:
+**Linux 3.4.11.** `service install` and `service restart` verify that the intended installed daemon answers; `wait-ready` performs the same check without installing or restarting it:
 
 ```bash
 orke service wait-ready --timeout 120
@@ -462,7 +479,7 @@ The older 3.4.1 package does not provide these readiness/retention guarantees. T
 
 ## Session commands and server web windows
 
-**Linux 3.4.10.** The package includes a control CLI and a server-owned virtual display for web windows. These capabilities are absent from the older October 9 archive.
+**Linux 3.4.11.** The package includes a control CLI and a server-owned virtual display for web windows. These capabilities are absent from the older October 9 archive.
 
 Useful read-only commands after the daemon starts:
 
@@ -509,7 +526,7 @@ Inspect the session before sending input. `--submit true` requests Enter; succes
 
 ### Browser dependencies and status
 
-Linux 3.4.10 requires these additional Ubuntu packages:
+Linux 3.4.11 requires these additional Ubuntu packages:
 
 ```bash
 sudo apt-get install -y xvfb libnss3 libgtk-3-0t64 libatk1.0-0t64 \
@@ -665,10 +682,10 @@ The archive command runs only if stopping the service succeeds. Check any archiv
 | New `update` / `uninstall` / `wait-ready` command is unavailable | The public October 9 archive predates it. Use the older-version update/removal instructions until a release containing the command is installed. |
 | Update/removal says the installation is busy | Let the other installation finish. If a standalone `serve` is listed, stop it in its own terminal. Retry from SSH. |
 | `--purge` refuses because support rooms remain | Reopen orke, delete its support rooms/AIs and let cleanup finish before retrying. If the message says the service was stopped during its final check, follow its restart/recovery instructions first. |
-| `--purge` refuses with `Contains entries not created by orke: employees` | Only the first 3.4.6 build, replaced on October 13, 2026, with a custom `ORKE_HOME`. Nothing is removed. Upgrade to 3.4.10 with `curl -fsSL https://orke.bomtobe.com/install.sh \| bash -s -- --version 3.4.10` or run `orke update`, then retry. |
+| `--purge` refuses with `Contains entries not created by orke: employees` | Only the first 3.4.6 build, replaced on October 13, 2026, with a custom `ORKE_HOME`. Nothing is removed. Upgrade to 3.4.11 with `curl -fsSL https://orke.bomtobe.com/install.sh \| bash -s -- --version 3.4.11` or run `orke update`, then retry. |
 | New installer replaced files but readiness failed | Preserve the printed previous-payload directory; inspect logs and follow that run's exact restoration commands. |
 | `orke remote setup` reports `account_required` | Sign in with `orke login` first, then run the same command again. |
-| `No ngrok settings in ORKE_HOME …` or `Open the UI via the ngrok address` | Wording left over from earlier versions; 3.4.10 does not use ngrok. Set up HTTPS access ([step 4](#4-turn-on-https-access)) or use the SSH tunnel. |
+| `No ngrok settings in ORKE_HOME …` or `Open the UI via the ngrok address` | Wording left over from earlier versions; 3.4.11 does not use ngrok. Set up HTTPS access ([step 4](#4-turn-on-https-access)) or use the SSH tunnel. |
 | The HTTPS address does not open from another network | Check that the cloud firewall, router and server firewall allow TCP 48650, that `orke service status` shows HTTPS access enabled, and that the certificate is valid for the current public IPv4 (a changed address needs a new certificate). CGNAT and some company networks cannot be reached directly; use the SSH tunnel. |
 | Google approval finishes but the workspace does not open | Use the same Google account as `orke login` on the server, and keep the first page open while you approve. To change the server's account, run `orke logout`, then `orke login`; existing browser access is revoked and running work continues. |
 | Automatic certificate is not issued or renewed | External TCP 80 must reach the `--http-port` you set at every renewal. orke waits at least 10 minutes between attempts. Check `orke service status` and the daemon log. |
@@ -684,25 +701,33 @@ When asking for help, include the version from **설정 → 정보** — **Setti
 
 | Version | Package | Checksum | Original release |
 | --- | --- | --- | --- |
+| **3.4.11** | [Linux x64 tar.gz](https://github.com/bomtobe-hgkim/orke-linux/releases/download/v3.4.11/orke-3.4.11-linux-x64.tar.gz) | [SHA-256](https://github.com/bomtobe-hgkim/orke-linux/releases/download/v3.4.11/orke-3.4.11-linux-x64.tar.gz.sha256) | October 18, 2026; expanded operator CLI and command help; Google sign-in, direct HTTPS access and server web windows |
 | **3.4.10** | [Linux x64 tar.gz](https://github.com/bomtobe-hgkim/orke-linux/releases/download/v3.4.10/orke-3.4.10-linux-x64.tar.gz) | [SHA-256](https://github.com/bomtobe-hgkim/orke-linux/releases/download/v3.4.10/orke-3.4.10-linux-x64.tar.gz.sha256) | October 17, 2026; Google sign-in and direct HTTPS access replace ngrok, automatic IP certificates, web-page automation that can press Enter |
 
-As of October 18, 2026, only 3.4.10 is available. Earlier release archives, checksums and version tags have been removed. Historical verification notes below describe the builds measured on their original dates.
+The latest release is 3.4.11; 3.4.10 also remains available. Older archives, checksums and version tags were removed on October 18, 2026. Historical verification notes below describe the builds measured on their original dates.
 
-For manual 3.4.10 installation, run in an empty download directory in SSH:
+For manual 3.4.11 installation, run in an empty download directory in SSH:
 
 ```bash
-mkdir -p "$HOME/orke-downloads/3.4.10"
-cd "$HOME/orke-downloads/3.4.10"
-curl -fLO https://github.com/bomtobe-hgkim/orke-linux/releases/download/v3.4.10/orke-3.4.10-linux-x64.tar.gz
-curl -fLO https://github.com/bomtobe-hgkim/orke-linux/releases/download/v3.4.10/orke-3.4.10-linux-x64.tar.gz.sha256
-sha256sum -c orke-3.4.10-linux-x64.tar.gz.sha256 && \
-  tar xzf orke-3.4.10-linux-x64.tar.gz && \
-  ./orke-3.4.10-linux-x64/install.sh
+mkdir -p "$HOME/orke-downloads/3.4.11"
+cd "$HOME/orke-downloads/3.4.11"
+curl -fLO https://github.com/bomtobe-hgkim/orke-linux/releases/download/v3.4.11/orke-3.4.11-linux-x64.tar.gz
+curl -fLO https://github.com/bomtobe-hgkim/orke-linux/releases/download/v3.4.11/orke-3.4.11-linux-x64.tar.gz.sha256
+sha256sum -c orke-3.4.11-linux-x64.tar.gz.sha256 && \
+  tar xzf orke-3.4.11-linux-x64.tar.gz && \
+  ./orke-3.4.11-linux-x64/install.sh
 ```
 
 Continue with the service, sign-in and HTTPS steps above after the installer succeeds. The checksum must report `OK`; a failed check stops the `&&` chain. You can remove the downloaded archive/extracted package after installation; run the installed `~/.local/bin/orke` for service commands.
 
 ## Validation and help
+
+Linux **3.4.11** was built and checked on Ubuntu 24.04.5 x86_64 from product source `4e0de422ef53bb12f4b65f62ad03112eceaceaec`, the same source as the Windows 3.4.11 Store bundle. The Release build succeeded with no warnings or errors. The ordinary .NET gate passed 22,264 tests with 387 skipped and no failures; all 19 Linux-specific checks, 13 slow JavaScript checks and 8 actual-Electron checks passed. Packaging verified the native runtime, executable modes and Electron 44.4.3 payload. An independent check matched all 758 regular archive files to the staged bytes, verified root-neutral ownership and safe write modes, and compared all five CLI/browser guides to the source. Six companion JavaScript files in the ASAR matched the source exactly, and the package identity is 3.4.11. The packaged CLI returned 136 management commands from offline JSON help without creating a home, and `orke-agent --version` printed `orke-agent 3.4.11`.
+
+The 191,325,409-byte archive has SHA-256 `1e4545bd6ee68ad6e8529bb21378a0291b72379be1d1e521323d3c996ba7c038`. These gates and package checks passed on their first execution.  Google sign-in, public HTTPS/certificates, GUI acceptance and real-provider questions were not repeated with this release; earlier measurements remain historical.
+
+
+A separate disposable daemon with synthetic membership and agent catalog was used for the published Linux CLI smoke. A real PTY wrote a fresh file marker, settings changes were read back, a stale session rename was refused, and explicit session termination, retained-result reads and cleanup succeeded. The existing VM service PID stayed unchanged. The forced-end result reported incomplete/truncated output (`completed=false`, `truncated=true`) while the captured screen was complete and `captureFailed=false`; full trailing-output capture is not claimed. The browser was disabled in that fixture. Early smoke-script command/field assumptions were corrected before this final measurement; product source and package bytes were unchanged.
 
 Linux **3.4.10** was built and checked on Ubuntu 24.04.5 x86_64 from product source `d79d78cd331cd0916bbc0be377646d393a09a82e`. The Release build succeeded with no warnings or errors. The ordinary .NET gate passed 21,821 tests with 384 skipped and no failures; all 19 Linux-specific checks, 13 slow JavaScript checks and 6 actual-Electron checks passed, each on the first run. Packaging verified the CLI distribution, native runtime files, executable permissions and Electron 44.4.3 payload. Six companion JavaScript files inside the ASAR matched the source byte for byte, and the packaged `orke-agent --version` printed `orke-agent 3.4.10`. The 191,048,592-byte archive has SHA-256 `22103e352879c6e2a38b5cf49d05224082ba2187fc7575c926290c1e06429634`.
 
