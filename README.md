@@ -377,7 +377,7 @@ orke update
 
 It selects the latest published Linux version, checks the downloaded package and uses orke's installer. Settings and records are kept.
 
-**Services installed before 3.4.13:** an update keeps your existing service unit. To add `OOMPolicy=continue` (a browser process stopped for low memory then no longer restarts orke and its sessions), run `orke service install` once from SSH after updating.
+**Services installed before 3.4.13:** an update keeps your existing service unit. To add `OOMPolicy=continue` (a browser process stopped for low memory then no longer restarts orke and its sessions), run `orke service uninstall` and then `orke service install` once from SSH after updating. `service install` refuses while the service runs; the pair restarts the service and keeps settings and records.
 
 **Updating from 3.4.9 or earlier:** 3.4.13 no longer uses ngrok, so the ngrok address stops opening orke. After the update, sign in with `orke login` and turn on HTTPS access ([steps 3–4](#3-sign-in-with-your-google-account)), or use an [SSH tunnel](#connect-through-an-ssh-tunnel). ngrok itself stays installed; remove it separately if you no longer need it.
 
@@ -741,6 +741,8 @@ Continue with the service, sign-in and HTTPS steps above after the installer suc
 Linux **3.4.13** was built and checked on Ubuntu 24.04.5 x86_64 from product source `df5e478ffeffa0ac08f8eb6ebda17f362152f757`. The Release build succeeded with no warnings or errors. The ordinary .NET gate passed 22,456 tests with 391 skipped and no failures; 19 Linux-specific checks passed with 1 explicit managed-ingress opt-in check skipped. All 13 slow JavaScript checks and 10 actual-Electron checks passed. The two earlier test passes on this source were started with SIGHUP ignored (`nohup`); under that, one native PTY reaping test failed at this source and at the 3.4.12 source alike, and it passed with default signal handling as in earlier release runs. The final pass used default signal handling and passed every stage before packaging.
 
 The 191,447,974-byte archive has SHA-256 `ac480cd9d29465513ebed906dc523a42858c22e5554e3056c6dab8f9b1d912ac`. It holds 760 regular files owned by 0/0 with no group- or world-writable entries; the installer is executable, the package `VERSION` reads 3.4.13, the app reports `3.4.13+df5e478`, and `orke-agent --version` printed `orke-agent 3.4.13`. The packaged files include the run tab cap, the new-page hand-back and the `OOMPolicy=continue` unit line, and the phone viewer's frame taps and Direct control.
+
+After publication, the test VM's own installation was updated from 3.4.12 with `orke update` (12 seconds, service ready with version 3.4.13). The update replaced the Chromium sandbox helper, so the virtual browser stayed unavailable until the documented `chown root:root` / `chmod 4755` and `orke service restart`; it was then ready. `orke service uninstall` followed by `orke service install` wrote `OOMPolicy=continue` into the existing unit.
 
 This release run did not visually accept the GUI, perform Google sign-in or public HTTPS/certificate operations, or ask real providers questions. Prior dated measurements remain historical.
 
